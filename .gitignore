@@ -69,4 +69,4 @@ force-app/main/default/labels/CustomLabels.labels-meta.xml
 .husky
 
 .forceignore
-.gitignore
+gitignore

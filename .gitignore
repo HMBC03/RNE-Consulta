@@ -62,3 +62,11 @@ node_modules/
 # --- SEGURIDAD: NO SUBIR TOKENS ---
 # Esto evita que se suba el archivo con tu token real
 force-app/main/default/labels/CustomLabels.labels-meta.xml
+
+#vscode
+.vscode/
+.vscode
+.husky
+
+.forceignore
+.gitignore

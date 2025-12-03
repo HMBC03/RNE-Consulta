@@ -7,9 +7,9 @@ export default class Micomponente extends LightningElement {
     @track phoneNumber = '';
     @track isLoading = false;
     @track queryResult = null;
-    @track contactDetails = []; // Nueva lista para las cajitas de colores
+    @track contactDetails = []; // Nueva lista para detalles de contacto
 
-    // Diccionario para traducir las llaves del API a Español
+    // Diccionario para traducir las llaves del API a Español facilita imprimirlo en el componente
     labelsMap = {
         'sms': 'Mensajería SMS',
         'aplicacion': 'Apps (WhatsApp)',
@@ -41,7 +41,7 @@ export default class Micomponente extends LightningElement {
         }
 
         this.isLoading = true;
-        this.contactDetails = []; // Limpiar anteriores
+        this.contactDetails = []; // Limpiar los datos anteriores antes de una nueva consulta
 
         try {
             const result = await consultarRNE({ dato: valorABuscar, tipo: tipoBusqueda });
@@ -53,19 +53,19 @@ export default class Micomponente extends LightningElement {
                 Is_Excluded__c: result.found
             };
 
-            // 2. PROCESAR LAS OPCIONES DETALLADAS (Aquí está la magia)
+            // 2. PROCESAR LAS OPCIONES DETALLADAS )
             if (result.contactOptions) {
                 let detalles = [];
                 
                 // Recorremos el mapa que viene de Apex: { sms: true, llamada: false ... }
                 for (const [key, value] of Object.entries(result.contactOptions)) {
                     
-                    // Definimos lógica: Según tu ejemplo, TRUE es habilitado, FALSE es bloqueado.
+                    //  Según la logica del endpoint de la CRC, TRUE es habilitado, FALSE es bloqueado.
                     let isAllowed = value === true; 
 
                     detalles.push({
                         key: key,
-                        label: this.labelsMap[key] || key.toUpperCase(), // Usar nombre bonito o la llave original
+                        label: this.labelsMap[key] || key.toUpperCase(), // Usar nombre o la llave original
                         value: value,
                         // Configuración visual dinámica
                         statusText: isAllowed ? 'PERMITIDO' : 'RESTRINGIDO',
@@ -78,7 +78,7 @@ export default class Micomponente extends LightningElement {
                 this.contactDetails = detalles;
             }
 
-            // Notificación (Toast)
+            // Notificación al usuario
             if (result.found) {
                 this.showToast('Registro Encontrado', 'El contacto existe en la base de datos.', 'info');
             } else {
